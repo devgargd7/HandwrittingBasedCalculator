@@ -1,24 +1,13 @@
 from keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 import tensorflow as tf
 from keras.models import Sequential
-from keras.models import model_from_json
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-import matplotlib
-from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.image import img_to_array
-from keras.utils import to_categorical
-from imutils import paths
-import argparse
 import random
 import cv2
-from sklearn.utils import shuffle
-from sklearn.metrics import accuracy_score
 
-matplotlib.use("Agg")
 
 # initialize the data and labels
 print("[INFO] loading images...")
@@ -28,8 +17,10 @@ labels = []
 # grab the image paths
 Paths = os.listdir('./data_cleaned/')
 
+# dictionary to map symbols to numbers for traing the model
 label_dict = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
               '8': 8, '9': 9, '+': 10, '-': 11, 't': 12, 'l': 13, 'g': 14, 'n': 15}
+
 # loop over the input images
 for Path in Paths:
     print("images in: ", Path)
@@ -38,8 +29,6 @@ for Path in Paths:
         # load the image, pre-process it, and store it in the data list
         image = cv2.imread('./data_cleaned/'+Path+'/' +
                            imagepath, cv2.IMREAD_GRAYSCALE)
-        # image_temp = np.ones((51, 51), np.uint8)
-        # image_temp[3:48, 3:48] = image
         kernel = np.ones((3, 3), np.uint8)
         image = cv2.erode(image, kernel, iterations=1)
         image = (255-image)
@@ -47,21 +36,16 @@ for Path in Paths:
         image = img_to_array(image)
         data.append(image)
 
-    # extract the class label from the image path and update the
-    # labels list
+    # extract the class label from the image path and update the labels list
         label = imagepath[0]
         labels.append(label_dict[label[0]])
 
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
-# print(labels)
-# partition the data into training and testing splits using 75% of
-# the data for training and the remaining 25% for testing
+
+# partition the data into training and testing splits using 75% of the data for training and the remaining 25% for testing
 (x_train, x_test, y_train, y_test) = train_test_split(
     data, labels, test_size=0.25, random_state=42)
-# convert the labels from integers to vectors
-
-# print(x_train.shape)
 
 # Reshaping the array to 4-dims so that it can work with the Keras API
 x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
@@ -94,6 +78,7 @@ model.evaluate(x_test, y_test)
 model_json = model.to_json()
 with open("model.json", "w") as json_file:
     json_file.write(model_json)
+
 # serialize weights to HDF5
 model.save_weights("model.h5")
 print("Saved model to disk")
