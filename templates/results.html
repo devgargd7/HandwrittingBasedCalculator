@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Handwriting based Calculater</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_draw.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='draw.js') }}"></script>
+</head>
+
+<header>
+    Handwriting based Calculater
+</header>
+
+<body>
+    <h2>Results</h2>
+    <div class="results">
+
+
+        <h2>Predicted:</h2>
+        <h1 style="color:red;">
+            {% for pred in prediction %}
+            {{ pred }}
+            {% endfor %}
+        </h1>
+        {%if result%}
+        <h2>Final Result:</h2>
+        <h1 style="color:red;"> {{ result }} ! </h1>
+        {%else%}
+        <h2 style="color:red;">Nothing to predict ! </h2>
+        {%endif%}
+        {%if error%}
+        <h2 style="color:red;">This error was caught: {{ error }} </h2>
+        {%endif%}
+    </div>
+</body>
+
+</html>
