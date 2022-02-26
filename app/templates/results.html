@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <title>Handwriting based Calculater</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <title>Handwriting based Calculator</title>
+    <script type="text/javascript" src="./static/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_draw.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='draw.js') }}"></script>
 </head>
@@ -13,21 +13,21 @@
 </header>
 
 <body>
-    <h2>Results</h2>
+    <h1>Results</h1>
     <div class="results">
 
 
-        <h2>Predicted:</h2>
+        <h2>Predicted Expression:</h2>
         <h1 style="color:red;">
             {% for pred in prediction %}
             {{ pred }}
             {% endfor %}
         </h1>
-        {%if result%}
+        {%if result is not none%}
         <h2>Final Result:</h2>
-        <h1 style="color:red;"> {{ result }} ! </h1>
+        <h1 style="color:red;"> {{ result }} </h1>
         {%else%}
-        <h2 style="color:red;">Nothing to predict ! </h2>
+        <h2 style="color:red;">Empty Result! </h2>
         {%endif%}
         {%if error%}
         <h2 style="color:red;">This error was caught: {{ error }} </h2>

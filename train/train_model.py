@@ -76,7 +76,7 @@ model.evaluate(x_test, y_test)
 
 # serialize model to JSON
 model_json = model.to_json()
-with open("model.json", "w") as json_file:
+with open("../app/model.json", "w") as json_file:
     json_file.write(model_json)
 
 # serialize weights to HDF5
